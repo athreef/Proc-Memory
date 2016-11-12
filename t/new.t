@@ -1,10 +1,10 @@
 use Test::More;
 
 BEGIN {
-    use_ok 'Memory::Process';
+    use_ok 'Proc::Memory';
 }
 
-my $proc = Memory::Process->new($$);
+my $proc = Proc::Memory->new($$);
 
 isnt $proc, undef;
 

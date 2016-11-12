@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-package Memory::Process;
+package Proc::Memory;
 
 # ABSTRACT: Peek/Poke other processes' address spaces
 # VERSION
@@ -18,14 +18,13 @@ use Inline  'C' => 'DATA' =>
 
 =head1 NAME
 
-Memory::Process - Peek/Poke other processes' address spaces
-
+Proc::Memory - Peek/Poke into processes' address spaces
 
 =head1 SYNOPSIS
 
-    use Memory::Process;
+    use Proc::Memory;
 
-    my $mem = Memory::Process->new(pid => 123);
+    my $mem = Proc::Memory->new(pid => 123);
 
     my $byte = $mem->peek(0x1000);
     my $u32  = $mem->read(0x1000, 4);
@@ -34,13 +33,13 @@ Memory::Process - Peek/Poke other processes' address spaces
 
 =head1 DESCRIPTION
 
-PEEK/POKE are a BASIC programming language extension for reading/writing the contents of a memory cell at a specified address. This module brings similiar semantics to Perl.
+PEEK/POKE are a BASIC programming language extension for reading/writing memory at a specified address. This module brings similiar capability to Perl.
 
 Eventually, Memory searching capability will also be added.
 
 =head1 IMPLEMENTATION
 
-The module leverages L<libvas|http://github.com/a3f/libvas> for accessing the other virtual address spaces.
+The module is a Perlish wrapper for L<libvas|http://github.com/a3f/libvas> and doesn't expose any extra functionality. C<libvas> currently supports Win32, macOS and Linux.
 
 =head1 METHODS AND ARGUMENTS
 
@@ -48,7 +47,7 @@ The module leverages L<libvas|http://github.com/a3f/libvas> for accessing the ot
 
 =item new(pid)
 
-Constructs a new Memory::Process instance.
+Constructs a new Proc::Memory instance.
 
 =cut
 

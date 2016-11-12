@@ -1,7 +1,7 @@
 use Test::More;
 
 BEGIN {
-    use_ok 'Memory::Process';
+    use_ok 'Proc::Memory';
 }
 
 use Inline 	C => Config => #force_build => 1 =>
@@ -9,7 +9,7 @@ use Inline 	C => Config => #force_build => 1 =>
 use Inline 'C';
 use Sentinel;
 
-my $proc = Memory::Process->new($$);
+my $proc = Proc::Memory->new($$);
 isnt $proc, undef;
 
 is var_get(), 3;

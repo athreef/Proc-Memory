@@ -1,7 +1,7 @@
 .build/
 *.sw*
 .DS_Store
-Memory-Process-*/
-Memory-Process-*.tar.gz
+Proc-Memory-*/
+Proc-Memory-*.tar.gz
 _Inline/
 
