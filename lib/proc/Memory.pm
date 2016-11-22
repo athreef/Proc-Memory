@@ -8,9 +8,10 @@ package Proc::Memory;
 use Carp;
 use Sentinel;
 use Scalar::Util 'looks_like_number';
+use Alien::libvas;
 use Inline  'C' => 'DATA' =>
-            enable => autowrap =>
-            LIBS => '-lvas';
+            enable => 'autowrap';
+use Inline 0.56 with => 'Alien::libvas';
 
 =pod
 
@@ -24,7 +25,7 @@ Proc::Memory - Peek/Poke into processes' address spaces
 
     use Proc::Memory;
 
-    my $mem = Proc::Memory->new(pid => 123);
+    my $mem = Proc::Memory->new(pid => $$);
 
     my $byte = $mem->peek(0x1000);
     my $u32  = $mem->read(0x1000, 4);
@@ -39,7 +40,7 @@ Eventually, Memory searching capability will also be added.
 
 =head1 IMPLEMENTATION
 
-The module is a Perlish wrapper for L<libvas|http://github.com/a3f/libvas> and doesn't expose any extra functionality. C<libvas> currently supports Win32, macOS and Linux.
+The module is a Perlish wrapper for L<Alien::libvas> and doesn't expose any extra functionality. L<libvas|http://github.com/a3f/libvas> currently supports Win32, macOS and Linux.
 
 =head1 METHODS AND ARGUMENTS
 
@@ -78,7 +79,7 @@ sub new {
 
 =item peek(addr [, 'pack-string'])
 
-Peeks at the given memory address. If no pack-string is specified, a single byte is read.
+Peeks at the given memory address. C<pack-string> defaults to C<'C'> (A single byte)
 
 =cut
 
@@ -93,21 +94,6 @@ sub peek {
     return $buf;
 }
 
-=item read(addr, size)
-
-Reads size bytes from given memory address.
-
-=cut
-
-#SV *xs_vas_read(void* vas, unsigned long src, size_t size) {
-sub read {
-    my $self = shift;
-    my $addr = shift;
-    my $size = shift;
-
-    my $buf = xs_vas_read($self->{vas}, $addr, $size);
-    return $buf;
-}
 
 
 =item poke(addr [, 'pack-string']) = $value # or = ($a, $b)
@@ -136,6 +122,22 @@ sub set_poke {
 sub poke :lvalue {
     defined wantarray or croak 'Useless use of poke';
     sentinel obj => [@_], get => \&get_poke, set => \&set_poke
+}
+
+=item read(addr, size)
+
+Reads size bytes from given memory address.
+
+=cut
+
+#SV *xs_vas_read(void* vas, unsigned long src, size_t size) {
+sub read {
+    my $self = shift;
+    my $addr = shift;
+    my $size = shift;
+
+    my $buf = xs_vas_read($self->{vas}, $addr, $size);
+    return $buf;
 }
 
 =item write(addr, buf [, count])
@@ -175,11 +177,12 @@ Inline->init();
 
 =head1 GIT REPOSITORY
 
-L<http://github.com/athreef/Memory-Process>
+L<http://github.com/athreef/Proc-Memory>
 
 =head1 SEE ALSO
 
 L<libvas|http://github.com/a3f/libvas>
+L<Alien::libvas>
 
 =head1 AUTHOR
 

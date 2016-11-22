@@ -10,7 +10,7 @@ Proc::Memory - Peek/Poke into processes' address spaces
 
     use Proc::Memory;
 
-    my $mem = Proc::Memory->new(pid => 123);
+    my $mem = Proc::Memory->new(pid => $$);
 
     my $byte = $mem->peek(0x1000);
     my $u32  = $mem->read(0x1000, 4);
@@ -25,7 +25,7 @@ Eventually, Memory searching capability will also be added.
 
 =head1 IMPLEMENTATION
 
-The module is a Perlish wrapper for L<libvas|http://github.com/a3f/libvas> and doesn't expose any extra functionality. C<libvas> currently supports Win32, macOS and Linux.
+The module is a Perlish wrapper for L<Alien::libvas> and doesn't expose any extra functionality. L<libvas|http://github.com/a3f/libvas> currently supports Win32, macOS and Linux.
 
 =head1 METHODS AND ARGUMENTS
 
@@ -37,15 +37,15 @@ Constructs a new Proc::Memory instance.
 
 =item peek(addr [, 'pack-string'])
 
-Peeks at the given memory address. If no pack-string is specified, a single byte is read.
-
-=item read(addr, size)
-
-Reads size bytes from given memory address.
+Peeks at the given memory address. C<pack-string> defaults to C<'C'> (A single byte)
 
 =item poke(addr [, 'pack-string']) = $value # or = ($a, $b)
 
 Pokes a given memory address. If no pack-string is given, the rvalue is written as is
+
+=item read(addr, size)
+
+Reads size bytes from given memory address.
 
 =item write(addr, buf [, count])
 
@@ -64,11 +64,12 @@ To be implemented when libvas provides it
 
 =head1 GIT REPOSITORY
 
-L<http://github.com/athreef/Memory-Process>
+L<http://github.com/athreef/Proc-Memory>
 
 =head1 SEE ALSO
 
 L<libvas|http://github.com/a3f/libvas>
+L<Alien::libvas>
 
 =head1 AUTHOR
 
