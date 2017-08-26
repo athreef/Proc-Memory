@@ -112,7 +112,7 @@ sub set_poke {
     my $buf = shift;
     my $addr  = shift @args or croak 'Address must be specified';
     if (my $fmt = shift @args) {
-        $buf = &CORE::pack($fmt, ref($buf) eq 'ARRAY' ? @{$buf} : $buf);
+        $buf = pack($fmt, ref($buf) eq 'ARRAY' ? @{$buf} : $buf);
     }
 
     my $nbytes = xs_vas_write($self->{vas}, $addr, $buf, length $buf);
