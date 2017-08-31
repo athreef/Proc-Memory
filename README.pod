@@ -19,13 +19,23 @@ Proc::Memory - Peek/Poke into processes' address spaces
 
 =head1 DESCRIPTION
 
-PEEK/POKE are a BASIC programming language extension for reading/writing memory at a specified address. This module brings similiar capability to Perl.
+PEEK/POKE are a BASIC programming language extension for reading and writing memory at a specified address across process boundaries. This module brings similiar capability to Perl.
 
 Eventually, Memory searching capability will also be added.
 
 =head1 IMPLEMENTATION
 
-The module is a Perlish wrapper for L<Alien::libvas> and doesn't expose any extra functionality. L<libvas|http://github.com/a3f/libvas> currently supports Win32, macOS and Linux.
+The module is a Perlish wrapper for L<Alien::libvas> and doesn't expose any extra functionality. L<libvas|http://github.com/a3f/libvas> claims support for following backends:
+
+    • win32      - Windows API's {Read,Write}ProcessMemory
+    • mach       - Mach Virtual Memory API (vm_copy) - macOS and GNU Hurd
+    • process_vm - process_vm_{readv, writev} on Linux 3.2+
+    • procfs-mem - /proc/$pid/mem on Linux and some BSDs
+    • procfs-as  - /proc/$pid/as on SunOS/Solaris
+    • ptrace     - ptrace(2), available on many Unices
+    • memcpy     - Trivial implementation that doesn't supports foreign address spaces
+
+I am not able to extensively test all these configurations (or test at all for Solaris). Continous Integration is set up for the Windows, macOS and Linux backends and they should work well. Additionally CPAN testers test it across a multitude of BSD and Linux systems. Filing issues (Preferably on Github) about more exotic systems is more than welcome!
 
 =head1 METHODS AND ARGUMENTS
 
