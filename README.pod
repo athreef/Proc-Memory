@@ -30,12 +30,11 @@ The module is a Perlish wrapper for L<Alien::libvas> and doesn't expose any extr
     • win32      - Windows API's {Read,Write}ProcessMemory
     • mach       - Mach Virtual Memory API (vm_copy) - macOS and GNU Hurd
     • process_vm - process_vm_{readv, writev} on Linux 3.2+
-    • procfs-mem - /proc/$pid/mem on Linux and some BSDs
-    • procfs-as  - /proc/$pid/as on SunOS/Solaris
+    • procfs     - /proc/$pid/mem on Linux and some BSDs, /proc/$pid/as on SunOS
     • ptrace     - ptrace(2), available on many Unices
     • memcpy     - Trivial implementation that doesn't supports foreign address spaces
 
-I am not able to extensively test all these configurations (or test at all for Solaris). Continous Integration is set up for the Windows, macOS and Linux backends and they should work well. Additionally CPAN testers test it across a multitude of BSD and Linux systems. Filing issues (Preferably on Github) about more exotic systems is more than welcome!
+Bug reports and contributions are welcome. :-)
 
 =head1 METHODS AND ARGUMENTS
 
